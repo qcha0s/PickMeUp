@@ -1,8 +1,9 @@
 package com.liftlockstudios.pickmeup;
 
 import android.app.Activity;
+import android.graphics.Point;
 import android.os.Bundle;
-
+import android.view.Display;
 
 
 public class GameActivity extends Activity {
@@ -13,8 +14,20 @@ public class GameActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        m_gameView = new GameView(this);
+        // get a display object to access the screen details
+        Display display = getWindowManager().getDefaultDisplay();
+
+        Point size = new Point();
+        display.getSize(size);
+
+
+        m_gameView = new GameView(this, size.x, size.y);
         setContentView(m_gameView);
+
+
+
+
+
     }
 
 

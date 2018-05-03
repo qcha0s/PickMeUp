@@ -19,3 +19,7 @@ Targeting Android Oreo - Nexus 5x or better
 
 Simplistic; Beginner;
 
+
+
+
+

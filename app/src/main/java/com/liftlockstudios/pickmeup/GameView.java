@@ -6,6 +6,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
@@ -23,13 +24,13 @@ public class GameView extends SurfaceView implements Runnable {
 
 
 
-    public GameView(Context context){
+    public GameView(Context context, int screenW, int screenH){
         super(context);
 
         m_holder = getHolder();
         m_paint = new Paint();
 
-        m_player = new Player(context);
+        m_player = new Player(context, screenW, screenH);
 
     }
 
@@ -43,6 +44,30 @@ public class GameView extends SurfaceView implements Runnable {
             control();
         }
     }
+
+    @Override
+    public boolean onTouchEvent(MotionEvent motionEvent) {
+
+        switch(motionEvent.getAction() & MotionEvent.ACTION_MASK) {
+
+            // player lifted a finger
+            case MotionEvent.ACTION_UP:
+                m_player.stopJumping();
+
+                break;
+
+
+            // has the player touched the screen
+            case MotionEvent.ACTION_DOWN:
+                m_player.setJumping();
+
+                break;
+
+        }
+
+        return true;
+    }
+
 
 
     private void update() {
