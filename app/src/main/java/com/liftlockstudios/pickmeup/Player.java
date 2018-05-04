@@ -28,7 +28,7 @@ public class Player {
         sprite = BitmapFactory.decodeResource(context.getResources(), R.drawable.bunny);
         jumping = false;
 
-        maxY = screenH - sprite.getHeight() - 70;
+        maxY = screenH - sprite.getHeight() - 70; //FIXME: Magic Number
         minY = 0;
 
         maxX = screenW - sprite.getWidth();

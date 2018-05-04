@@ -16,6 +16,7 @@ public class GameView extends SurfaceView implements Runnable {
     private Thread m_gameThread = null;
 
     private Player m_player;
+    private Enemy m_enemy;
 
     // for drawing
     private Paint m_paint;
@@ -31,6 +32,8 @@ public class GameView extends SurfaceView implements Runnable {
         m_paint = new Paint();
 
         m_player = new Player(context, screenW, screenH);
+
+        m_enemy = new Enemy(context, screenW, screenH);
 
     }
 
@@ -73,6 +76,7 @@ public class GameView extends SurfaceView implements Runnable {
     private void update() {
 //        Log.d("dBug", "update()");
         m_player.update();
+        m_enemy.update();
     }
 
     private void draw() {
@@ -88,6 +92,13 @@ public class GameView extends SurfaceView implements Runnable {
             m_canvas.drawBitmap(m_player.getSprite(),
                     m_player.getX(), m_player.getY(),
                     m_paint);
+
+            // draw the enemy
+            m_canvas.drawBitmap(m_enemy.getSprite(),
+                    m_enemy.getX(), m_enemy.getY(),
+                    m_paint);
+
+
 
             m_holder.unlockCanvasAndPost(m_canvas);
 
