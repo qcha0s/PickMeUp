@@ -31,10 +31,11 @@ public class GameView extends SurfaceView implements Runnable {
     private long m_deltaTime;
     private long m_fps;
 
-    private LevelManager m_lm;
-    private Viewport m_vp;
-
-    public InputController m_ic;
+//TODO: Work In Progress
+//    private LevelManager m_lm;
+//    private Viewport m_vp;
+//
+//    public InputController m_ic;
 
 
     public GameView(Context context, int screenW, int screenH){
