@@ -46,9 +46,6 @@ public class Enemy {
             y = maxY;
         }
 
-
-
-
     }
 
 

@@ -17,16 +17,12 @@ public class GameActivity extends Activity {
         // get a display object to access the screen details
         Display display = getWindowManager().getDefaultDisplay();
 
-        Point size = new Point();
-        display.getSize(size);
+        Point resolution = new Point();
+        display.getSize(resolution);
 
+        m_gameView = new GameView(this, resolution.x, resolution.y);
 
-        m_gameView = new GameView(this, size.x, size.y);
         setContentView(m_gameView);
-
-
-
-
 
     }
 
