@@ -25,7 +25,7 @@ public abstract class GameObject {
         return m_spriteName;
     }
 
-    public Bitmap prepareSprite(Context context, String spriteName /* TODO: scale */) {
+    public Bitmap prepareSprite(Context context, String spriteName, int pixelsPerMeter) {
 
         // get a resource
         int resID = context.getResources().getIdentifier(spriteName,
@@ -34,8 +34,10 @@ public abstract class GameObject {
         // create the sprite
         Bitmap sprite = BitmapFactory.decodeResource(context.getResources(), resID);
 
-
-        //TODO: Scale image
+        //TODO: maybe ??
+        sprite = Bitmap.createScaledBitmap(sprite,
+                (int)(m_width * m_animFrameCount * pixelsPerMeter),
+                (int)(m_height * pixelsPerMeter), false);
 
         return sprite;
     }
