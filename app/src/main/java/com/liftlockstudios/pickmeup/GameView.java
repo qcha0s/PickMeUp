@@ -121,14 +121,14 @@ public class GameView extends SurfaceView implements Runnable {
             }
 
             if(m_debugging) {
-                m_paint.setTextSize(16);
+                m_paint.setTextSize(48);
                 m_paint.setTextAlign(Paint.Align.LEFT);
                 m_paint.setColor(Color.argb(255, 255,255, 255));
                 m_canvas.drawText("FPS: " + m_fps, 10, 60, m_paint);
-                m_canvas.drawText("Num Objs: " + m_lm.m_gameObjects.size(), 10, 80, m_paint);
-                m_canvas.drawText("Num Clip: " + m_vp.getNumClipped(), 10, 100, m_paint);
-                m_canvas.drawText("PlayerX: " + m_lm.m_gameObjects.get(m_lm.m_playerIndex).getWorldLocation().x, 10, 120, m_paint);
-                m_canvas.drawText("PlayerY: " + m_lm.m_gameObjects.get(m_lm.m_playerIndex).getWorldLocation().y, 10, 140, m_paint);
+                m_canvas.drawText("Num Objs: " + m_lm.m_gameObjects.size(), 10, 120, m_paint);
+                m_canvas.drawText("Num Clip: " + m_vp.getNumClipped(), 10, 180, m_paint);
+                m_canvas.drawText("PlayerX: " + m_lm.m_gameObjects.get(m_lm.m_playerIndex).getWorldLocation().x, 10, 240, m_paint);
+                m_canvas.drawText("PlayerY: " + m_lm.m_gameObjects.get(m_lm.m_playerIndex).getWorldLocation().y, 10, 300, m_paint);
 
                 m_vp.resetNumClipped();
             }
