@@ -63,6 +63,15 @@ public class Viewport {
         // dBugging
         if(clipped) {
             m_numClipped++;
+
+
+
+
+
+
+
+
+
         }
 
         return clipped;

@@ -7,6 +7,7 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
@@ -32,8 +33,8 @@ public class GameView extends SurfaceView implements Runnable {
 
     private LevelManager m_lm;
     private Viewport m_vp;
-
     public InputController m_ic;
+    public SoundManager m_sm;
 
 
     public GameView(Context context, int screenW, int screenH){
@@ -44,6 +45,9 @@ public class GameView extends SurfaceView implements Runnable {
         m_paint = new Paint();
 
         m_vp = new Viewport(screenW, screenH);
+
+        m_sm = new SoundManager();
+        m_sm.loadSounds(context);
 
         loadLevel("LevelCave", 15, 2);
 
@@ -82,12 +86,29 @@ public class GameView extends SurfaceView implements Runnable {
     }
 
 
+    //TODO: replace this in the Input Manager
+    @Override
+    public boolean onTouchEvent(MotionEvent motionEvent) {
+        switch(motionEvent.getAction() * MotionEvent.ACTION_MASK) {
+            case MotionEvent.ACTION_DOWN:
+                m_lm.switchPlayingStatus();
+                break;
+        }
+        return true;
+    }
+
+
+
     private void update() {
         for(GameObject go : m_lm.m_gameObjects) {
             if(go.isActive()) {
                 // clip anything off screen
                 if(!m_vp.clipObjects(go.getWorldLocation().x, go.getWorldLocation().y, go.getWidth(), go.getHeight())) {
                     go.setVisible(true);
+                    if(m_lm.isPlaying()) {
+                        go.update(m_fps, m_lm.m_gravity);
+
+                    }
                 } else {
                     go.setVisible(false);
                 }
