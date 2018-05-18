@@ -6,10 +6,13 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
+import android.graphics.RectF;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
+
+import java.util.ArrayList;
 
 public class GameView extends SurfaceView implements Runnable {
 
@@ -86,16 +89,16 @@ public class GameView extends SurfaceView implements Runnable {
     }
 
 
-    //TODO: replace this in the Input Manager
-    @Override
-    public boolean onTouchEvent(MotionEvent motionEvent) {
-        switch(motionEvent.getAction() * MotionEvent.ACTION_MASK) {
-            case MotionEvent.ACTION_DOWN:
-                m_lm.switchPlayingStatus();
-                break;
-        }
-        return true;
-    }
+//    //TODO: replace this in the Input Manager
+//    @Override
+//    public boolean onTouchEvent(MotionEvent motionEvent) {
+//        switch(motionEvent.getAction() * MotionEvent.ACTION_MASK) {
+//            case MotionEvent.ACTION_DOWN:
+//                m_lm.switchPlayingStatus();
+//                break;
+//        }
+//        return true;
+//    }
 
 
 
@@ -105,6 +108,26 @@ public class GameView extends SurfaceView implements Runnable {
                 // clip anything off screen
                 if(!m_vp.clipObjects(go.getWorldLocation().x, go.getWorldLocation().y, go.getWidth(), go.getHeight())) {
                     go.setVisible(true);
+
+                    int hit = m_lm.m_player.checkCollisions(go.getHitbox());
+                    if(hit > 0) {
+                        // we have a collision
+                        switch (go.getType()) {
+
+                            default: // regular tile
+                                if(hit == 1) { // left or right
+                                    m_lm.m_player.setVX(0);
+                                    m_lm.m_player.setPressingRight(false);
+                                }
+
+                                if(hit == 2) { // ground
+                                    m_lm.m_player.m_isFalling = false;
+                                }
+                                break;
+
+                        }
+                    }
+
                     if(m_lm.isPlaying()) {
                         go.update(m_fps, m_lm.m_gravity);
 
@@ -141,6 +164,20 @@ public class GameView extends SurfaceView implements Runnable {
                 }
             }
 
+
+            // draw buttons
+            m_paint.setColor(Color.argb(128, 255, 255, 255));
+            ArrayList<Rect> buttonsToDraw;
+            buttonsToDraw = m_ic.getButtons();
+
+            for(Rect rect : buttonsToDraw) {
+                RectF rf = new RectF(rect.left, rect.top, rect.right, rect.bottom);
+                m_canvas.drawRoundRect(rf, 15f, 15f, m_paint);
+            }
+
+
+
+
             if(m_debugging) {
                 m_paint.setTextSize(48);
                 m_paint.setTextAlign(Paint.Align.LEFT);
@@ -153,6 +190,7 @@ public class GameView extends SurfaceView implements Runnable {
 
                 m_vp.resetNumClipped();
             }
+
 
             m_holder.unlockCanvasAndPost(m_canvas);
 

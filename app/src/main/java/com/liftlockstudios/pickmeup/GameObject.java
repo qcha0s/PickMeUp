@@ -10,6 +10,8 @@ public abstract class GameObject {
     private float m_width;
     private float m_height;
 
+    private RectHitbox m_rectHitbox = new RectHitbox();
+
     private boolean m_active = true;
     private boolean m_visible = true;
 
@@ -78,6 +80,20 @@ public abstract class GameObject {
     public void setSpriteName(String spriteName) {
         m_spriteName = spriteName;
     }
+
+
+    public RectHitbox getHitbox() {
+        return m_rectHitbox;
+    }
+
+    public void setRectHitbox() {
+        m_rectHitbox.setLeft(m_worldLocation.x);
+        m_rectHitbox.setTop(m_worldLocation.y);
+        m_rectHitbox.setRight(m_worldLocation.x + m_width);
+        m_rectHitbox.setBottom(m_worldLocation.y + m_height);
+    }
+
+
 
     public float getWidth(){
         return m_width;

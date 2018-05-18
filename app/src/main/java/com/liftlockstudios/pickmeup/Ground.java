@@ -13,6 +13,7 @@ public class Ground extends GameObject {
 
         setSpriteName("ground");
         setWorldLocation(worldStartX, worldStartY, 0);
+        setRectHitbox();
     }
 
     public void update(long fps, float gravity) { }
