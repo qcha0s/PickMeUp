@@ -1,9 +1,13 @@
 package com.liftlockstudios.pickmeup;
 
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.RectF;
@@ -37,7 +41,7 @@ public class GameView extends SurfaceView implements Runnable {
     private LevelManager m_lm;
     private Viewport m_vp;
     public InputController m_ic;
-    public SoundManager m_sm;
+   // public SoundManager m_sm;
 
 
     public GameView(Context context, int screenW, int screenH){
@@ -49,8 +53,8 @@ public class GameView extends SurfaceView implements Runnable {
 
         m_vp = new Viewport(screenW, screenH);
 
-        m_sm = new SoundManager();
-        m_sm.loadSounds(context);
+    //    m_sm = new SoundManager();
+       // m_sm.loadSounds(context);
 
         loadLevel("LevelCave", 15, 2);
 
@@ -89,16 +93,33 @@ public class GameView extends SurfaceView implements Runnable {
     }
 
 
-//    //TODO: replace this in the Input Manager
-//    @Override
-//    public boolean onTouchEvent(MotionEvent motionEvent) {
-//        switch(motionEvent.getAction() * MotionEvent.ACTION_MASK) {
-//            case MotionEvent.ACTION_DOWN:
-//                m_lm.switchPlayingStatus();
-//                break;
-//        }
-//        return true;
-//    }
+    private Activity getActivity() {
+        return(Activity)m_context;
+    }
+
+
+    //TODO: replace this in the Input Manager
+    @Override
+    public boolean onTouchEvent(MotionEvent motionEvent) {
+
+        if(m_lm != null) {
+            m_ic.handleInput(motionEvent, m_lm, m_vp);
+        }
+
+
+
+        switch(motionEvent.getAction() * MotionEvent.ACTION_MASK) {
+            case MotionEvent.ACTION_DOWN:
+//
+//                Intent i = new Intent(getActivity(), GameOverActivity.class);
+//                getActivity().startActivity(i);
+//                getActivity().finish();
+
+
+                break;
+        }
+        return true;
+    }
 
 
 
@@ -110,9 +131,16 @@ public class GameView extends SurfaceView implements Runnable {
                     go.setVisible(true);
 
                     int hit = m_lm.m_player.checkCollisions(go.getHitbox());
+
+                    Log.d("HitBoxCheck", "hit is: " + hit);
+
                     if(hit > 0) {
                         // we have a collision
                         switch (go.getType()) {
+
+                           // add pickups
+
+
 
                             default: // regular tile
                                 if(hit == 1) { // left or right
@@ -122,6 +150,7 @@ public class GameView extends SurfaceView implements Runnable {
 
                                 if(hit == 2) { // ground
                                     m_lm.m_player.m_isFalling = false;
+                                    m_lm.m_player.setVY(0);
                                 }
                                 break;
 
@@ -137,6 +166,14 @@ public class GameView extends SurfaceView implements Runnable {
                 }
             }
         }
+
+        if(m_lm.isPlaying()) {
+            m_vp.setWorldCenter(m_lm.m_gameObjects.get(m_lm.m_playerIndex).getWorldLocation().x,
+                    m_lm.m_gameObjects.get(m_lm.m_playerIndex).getWorldLocation().y);
+        }
+
+
+
     }
 
     private void draw() {
@@ -158,8 +195,25 @@ public class GameView extends SurfaceView implements Runnable {
                                 go.getWorldLocation().x, go.getWorldLocation().y,
                                 go.getWidth(), go.getHeight()));
 
-                        m_canvas.drawBitmap(m_lm.m_spriteArray[m_lm.getSpriteIndex(go.getType())],
-                                toScreen2d.left, toScreen2d.top, m_paint);
+                        if(go.isAnimated()) {
+                            if(go.getFacing() == 1) {
+                                Matrix flipper = new Matrix();
+                                flipper.preScale(-1, 1);
+                                Rect r = go.getRectToDraw(System.currentTimeMillis());
+                                Bitmap b = Bitmap.createBitmap(m_lm.m_spriteArray[m_lm.getSpriteIndex(go.getType())],
+                                        r.left, r.top, r.width(), r.height(), flipper, true);
+
+                                m_canvas.drawBitmap(b, toScreen2d.left, toScreen2d.top, m_paint);
+                            } else {
+                                m_canvas.drawBitmap(m_lm.m_spriteArray[m_lm.getSpriteIndex(go.getType())],
+                                        go.getRectToDraw(System.currentTimeMillis()),
+                                        toScreen2d, m_paint);
+                            }
+                        } else {
+
+                            m_canvas.drawBitmap(m_lm.m_spriteArray[m_lm.getSpriteIndex(go.getType())],
+                                    toScreen2d.left, toScreen2d.top, m_paint);
+                        }
                     }
                 }
             }

@@ -1,6 +1,7 @@
 package com.liftlockstudios.pickmeup;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.graphics.Point;
 import android.os.Bundle;
 import android.view.Display;
@@ -9,6 +10,7 @@ import android.view.Display;
 public class GameActivity extends Activity {
 
     private GameView m_gameView;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,6 +26,7 @@ public class GameActivity extends Activity {
 
         setContentView(m_gameView);
 
+
     }
 
 
@@ -38,7 +41,6 @@ public class GameActivity extends Activity {
         super.onResume();
         m_gameView.resume();
     }
-
 
 
 }

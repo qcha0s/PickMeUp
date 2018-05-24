@@ -3,6 +3,7 @@ package com.liftlockstudios.pickmeup;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Rect;
 
 public abstract class GameObject {
 
@@ -15,7 +16,13 @@ public abstract class GameObject {
     private boolean m_active = true;
     private boolean m_visible = true;
 
+
+    private Animation m_anim = null;
+    private boolean m_animated;
+    private int m_animFPS;
     private int m_animFrameCount = 1;
+
+
     private char m_type;
 
     private String m_spriteName;
@@ -158,7 +165,7 @@ public abstract class GameObject {
     }
 
     public void setVY(float vy) {
-        if(m_canMove) {
+        if(canMove()) {
             m_vY = vy;
         }
     }
@@ -172,12 +179,35 @@ public abstract class GameObject {
     }
 
 
-
-
-
-
-
-
     //TODO: Animation frames
+
+    public void setAnimFPS(int animFPS) {
+        m_animFPS = animFPS;
+    }
+
+    public void setAnimFrameCount(int animFrameCount) {
+        m_animFrameCount = animFrameCount;
+    }
+
+    public boolean isAnimated() {
+        return m_animated;
+    }
+
+    public void setAnimated(Context context, int pPM, boolean animated) {
+        m_animated = animated;
+        m_anim = new Animation(context, m_spriteName, m_height, m_width, m_animFPS, m_animFrameCount, pPM);
+    }
+
+    public Rect getRectToDraw(long deltaTime) {
+        return m_anim.getCurrentFrame(deltaTime, m_vX, canMove());
+    }
+
+
+
+
+
+
+
+
 
 }

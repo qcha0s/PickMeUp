@@ -18,21 +18,21 @@ public class SoundManager {
 
     public void loadSounds(Context context) {
         m_soundPool = new SoundPool(1, AudioManager.STREAM_MUSIC, 0);
-        try {
-            AssetManager assetManager = context.getAssets();
-            AssetFileDescriptor descriptor;
-
-            // Sound FX
-            descriptor = assetManager.openFd("jump.ogg");
-            m_jumpSound = m_soundPool.load(descriptor, 0);
-
-            //TODO: Add more sounds
-
-
-
-        } catch (IOException e) {
-            Log.e("error", "failed to load sound file(s)");
-        }
+//        try {
+//            AssetManager assetManager = context.getAssets();
+//            AssetFileDescriptor descriptor;
+//
+//            // Sound FX
+//           // descriptor = assetManager.openFd("jump.ogg");
+//            //m_jumpSound = m_soundPool.load(descriptor, 0);
+//
+//            //TODO: Add more sounds
+//
+//
+//
+//        } catch (IOException e) {
+//            Log.e("error", "failed to load sound file(s)");
+//        }
     }
 
 

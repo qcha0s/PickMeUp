@@ -32,14 +32,11 @@ public class Player extends GameObject {
 
         setWidth(WIDTH);
         setHeight(HEIGHT);
-        setType('p');
-        setSpriteName("bunny");
-
-        setWorldLocation(worldStartX, worldStartY, 0);
 
         setVX(0);
         setVY(0);
         setFacing(RIGHT);
+
         m_isJumping = false;
         m_isFalling = false;
 
@@ -47,13 +44,23 @@ public class Player extends GameObject {
         setActive(true);
         setVisible(true);
 
+        setType('p');
+        setSpriteName("bunny");
+
+
+        final int ANIMATION_FPS = 16;
+        final int ANIMATION_FRAME_COUNT = 2;
+
+        setAnimFPS(ANIMATION_FPS);
+        setAnimFrameCount(ANIMATION_FRAME_COUNT);
+        setAnimated(context, pixelsPerMeter, true);
+
+        setWorldLocation(worldStartX, worldStartY, 0);
+
         m_hitRight = new RectHitbox();
         m_hitTop = new RectHitbox();
         m_hitLeft = new RectHitbox();
         m_hitBottom = new RectHitbox();
-
-
-
 
     }
 
@@ -67,14 +74,11 @@ public class Player extends GameObject {
             setVX(0);
         }
 
-
         if(getVX() > 0) {
             setFacing(RIGHT);
         } else if (getVX() < 0) {
             setFacing(LEFT);
         }
-
-        //TODO: Add Jumping and Gravity
 
         if(m_isJumping) {
             long timeJumping = System.currentTimeMillis() - m_jumpTime;
